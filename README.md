@@ -25,11 +25,11 @@ rm -rf ./nix-project-template
 ### From GitHub 
 
 - From this page, create your project by clicking "Use this template" 
-![][docs/clickme0.png]
+![](docs/clickme0.png)
 
 - Then create your project as you normally would.
 
-![][docs/clickme1.png]
+![](docs/clickme1.png)
 
 -  All the files and folders you need will be automatically created. 
 
