@@ -1,4 +1,4 @@
-# ##########################################################################################
+###########################################################################################
 #
 # dependencies.nix
 #
@@ -9,9 +9,9 @@
 #   run   - Anything that needs to be available at runtime (e.g. you need to import it in python).
 #
 #   build - Packages you don't want packaged in the final build, but still need to build
-#           the project (e.g. pre-commit hooks linters)
+#           the project (e.g. pre-commit hooks, linters)
 #
-#   test  - Test-only dependencies (e.g code coverage packages)
+#   test  - Test-only dependencies (e.g debugpy Visual Studio code debugger, code coverage packages)
 #
 # It takes in Nixpkgs and the Python package corresponding to a Python version.
 #
@@ -19,7 +19,9 @@
 
 { pkgs, python, lib ? pkgs.lib, stdenv ? pkgs.stdenv, cudaSupport ? false }:
 let precommit = (import ./pkgs/pre-commit/pre-commit.nix) { inherit python; };
-    minknow = (pkgs.callPackage ./pkgs/minknow/minknow.nix) { inherit python; };
+
+# The 'with python.pkgs' line here lets us just list python packages 
+# directly by name (e.g 'numpy'), instead of typing 'python.pkgs.numpy' each time.
 in with python.pkgs; rec {
 
   ###########################################################################################
@@ -50,9 +52,6 @@ in with python.pkgs; rec {
     # Neural networks
     torchvision
 
-    # MinKnow
-    minknow
-
   ] ++ lib.optional (cudaSupport) pytorchWithCuda
     ++ lib.optional (!cudaSupport) pytorchWithoutCuda;
 
@@ -75,11 +74,9 @@ in with python.pkgs; rec {
     flake8
     # Docstring static analyzer
     pydocstyle
-    # Serialization protocol (used for interfacing with MinKNOW/MinION)
-    pkgs.protobuf
-    protobuf
-    grpcio
-    grpcio-tools
+    pkgs.cargo
+    # Nix file style enforcer
+    pkgs.nixpkgs-fmt
   ];
 
   ###########################################################################################
