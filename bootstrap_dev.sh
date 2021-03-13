@@ -88,22 +88,6 @@ get_version () {
 }
 
 
-# This script requires a 'PROJECT_DIRECTORY' environment variable, to be set to
-# the directory where the current package resides (e.g. where you cloned https://github.com/uwmisl/*)
-# If PROJECT_DIRECTORY wasn't provided, assume this script's being run from
-# the poretitioner directory.
-PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-$(pwd)}
-
-PATH_TO_PROJECT_NIX_DIRECTORY="${PROJECT_DIRECTORY}/nix/"
-
-if [ ! -d $PATH_TO_PROJECT_NIX_DIRECTORY ];
-then
-    yellow "This script requires a PROJECT_DIRECTORY environment variable, set to a directory that has a 'nix' subdirectory."
-    yellow "e.g. PROJECT_DIRECTORY='$HOME/developer/misl/poretitioner'"
-    echo "PROJECT_DIRECTORY is currently set to '$PROJECT_DIRECTORY'"
-    exit 1
-fi
-
 get () {
     # Finds the *Nix-friendly HTTP GET function. Uses curl if the user has it (MacOS/Linux)
     # or wget if they don't (Linux)
